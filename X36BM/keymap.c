@@ -170,8 +170,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             }
 
             if (best_v > 20) {
-                uint8_t v = (uint16_t)best_v * gv / 255;
-                HSV hsv = {30, 220, v};
+                uint8_t peak = (gv <= 175) ? gv + 80 : 255;
+                uint8_t v = (uint16_t)best_v * peak / 255;
+                HSV hsv = {35, 200, v};
                 RGB rgb = hsv_to_rgb(hsv);
                 rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
             }
