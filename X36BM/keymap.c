@@ -150,10 +150,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
                 // Expanding spread: starts tight (10px), grows wide (70px)
                 uint8_t spread = 10 + (uint16_t)elapsed * 60 / RIPPLE_DURATION;
-                if (dsq > (uint32_t)spread * spread) continue;
+                uint32_t spread_sq = (uint32_t)spread * spread;
+                if (dsq > spread_sq) continue;
 
-                uint8_t dist = sqrt16(dsq > 65535 ? 65535 : (uint16_t)dsq);
-                uint8_t dist_fade = 255 - (uint16_t)dist * 255 / spread;
+                uint8_t dist_fade = 255 - (uint8_t)(dsq * 255 / spread_sq);
                 uint8_t time_fade = 255 - (uint16_t)elapsed * 255 / RIPPLE_DURATION;
                 uint8_t v = (uint16_t)dist_fade * time_fade / 255;
                 if (v > best_v) best_v = v;
