@@ -97,14 +97,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Set reactive mode on boot (lavender base color)
 void keyboard_post_init_user(void) {
     rgb_matrix_enable_noeeprom();
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
     rgb_matrix_sethsv_noeeprom(200, 50, 120);
 }
 
 // Switch RGB mode when changing layers
 layer_state_t layer_state_set_user(layer_state_t state) {
     if (get_highest_layer(state) == 0) {
-        rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS);
+        rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
     } else {
         rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
     }
