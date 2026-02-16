@@ -126,6 +126,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         case 3: h = 85;  s = 160; v = 90;  break; // Green
         default: return false;
     }
+    // Scale brightness by global setting (RGB_VAI/RGB_VAD affects all layers)
+    v = (uint16_t)v * rgb_matrix_get_val() / 255;
     HSV hsv = {h, s, v};
     RGB rgb = hsv_to_rgb(hsv);
 
