@@ -146,16 +146,25 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
                 int16_t dx = (int16_t)g_led_config.point[i].x - (int16_t)ripples[r].x;
                 int16_t dy = (int16_t)g_led_config.point[i].y - (int16_t)ripples[r].y;
-                uint32_t dsq = (uint32_t)((int32_t)dx * dx) + (uint32_t)((int32_t)dy * dy);
+                // Octagonal distance approximation (no sqrt needed)
+                uint16_t adx = (dx >= 0) ? dx : -dx;
+                uint16_t ady = (dy >= 0) ? dy : -dy;
+                uint16_t dist = (adx > ady) ? adx + ady * 3 / 8 : ady + adx * 3 / 8;
 
-                // Expanding spread: starts tight (10px), grows wide (70px)
-                uint8_t spread = 10 + (uint16_t)elapsed * 60 / RIPPLE_DURATION;
-                uint32_t spread_sq = (uint32_t)spread * spread;
-                if (dsq > spread_sq) continue;
+                // Expanding ring: wavefront moves outward
+                uint16_t wave_pos = (uint32_t)elapsed * 70 / RIPPLE_DURATION;
+                int16_t from_wave = (int16_t)dist - (int16_t)wave_pos;
+                if (from_wave > 15 || from_wave < -25) continue;
 
-                uint8_t dist_fade = 255 - (uint8_t)(dsq * 255 / spread_sq);
+                // Ring shape: sharp leading edge (15px), softer trail behind (25px)
+                uint8_t proximity;
+                if (from_wave >= 0) {
+                    proximity = 255 - (uint16_t)from_wave * 255 / 15;
+                } else {
+                    proximity = 255 - (uint16_t)(-from_wave) * 255 / 25;
+                }
                 uint8_t time_fade = 255 - (uint16_t)elapsed * 255 / RIPPLE_DURATION;
-                uint8_t v = (uint16_t)dist_fade * time_fade / 255;
+                uint8_t v = (uint16_t)proximity * time_fade / 255;
                 if (v > best_v) best_v = v;
             }
 
