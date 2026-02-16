@@ -92,46 +92,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // =====================================================================
 // RGB Matrix - Per-layer lighting
+// All coloring handled in indicators function for reliability
 // =====================================================================
 
-// Set reactive mode on boot (lavender base color)
 void keyboard_post_init_user(void) {
     rgb_matrix_enable_noeeprom();
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
-    rgb_matrix_sethsv_noeeprom(200, 50, 120);
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
 }
 
-// Switch RGB mode and color when changing layers
-layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(state)) {
-        case 0:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
-            rgb_matrix_sethsv_noeeprom(200, 50, 120); // Lavender
-            break;
-        case 1:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-            rgb_matrix_sethsv_noeeprom(0, 0, 140);    // White
-            break;
-        case 2:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-            rgb_matrix_sethsv_noeeprom(140, 60, 140);  // Light blue
-            break;
-        case 3:
-            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-            rgb_matrix_sethsv_noeeprom(80, 50, 100);   // Light yellow-green
-            break;
-    }
-    return state;
-}
-
-// Light up only active keys on Layers 1-3
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t layer = get_highest_layer(layer_state | default_layer_state);
-    if (layer == 0) return false;
 
     // Layer colors (HSV)
     uint8_t h, s, v;
     switch (layer) {
+        case 0: h = 200; s = 50; v = 120; break; // Lavender
         case 1: h = 0;   s = 0;  v = 140; break; // White
         case 2: h = 140; s = 60; v = 140; break; // Light blue
         case 3: h = 80;  s = 50; v = 100; break; // Light yellow-green
@@ -145,14 +120,19 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             uint8_t led_index = g_led_config.matrix_co[row][col];
             if (led_index == NO_LED || led_index < led_min || led_index >= led_max) continue;
 
-            // Read keycode directly from keymap (don't resolve KC_TRNS)
-            uint16_t keycode = keymaps[layer][row][col];
-            if (keycode == KC_TRANSPARENT || keycode == KC_NO) {
-                rgb_matrix_set_color(led_index, 0, 0, 0);
-            } else {
+            if (layer == 0) {
+                // Layer 0: all keys lavender
                 rgb_matrix_set_color(led_index, rgb.r, rgb.g, rgb.b);
+            } else {
+                // Layer 1-3: active keys colored, transparent keys off
+                uint16_t keycode = keymaps[layer][row][col];
+                if (keycode == KC_TRANSPARENT || keycode == KC_NO) {
+                    rgb_matrix_set_color(led_index, 0, 0, 0);
+                } else {
+                    rgb_matrix_set_color(led_index, rgb.r, rgb.g, rgb.b);
+                }
             }
         }
     }
-    return false;
+    return true; // We handle all LED coloring
 }
