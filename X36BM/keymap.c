@@ -7,6 +7,26 @@
 // Layer 3 - System (MO(3) hold)
 // =====================================================================
 
+// Custom ripple effect: purple base + orange ripple on keypress
+#define RIPPLE_COUNT 8
+#define RIPPLE_DURATION 800
+
+static struct { uint8_t x, y; uint16_t time; } ripples[RIPPLE_COUNT];
+static uint8_t ripple_idx;
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        uint8_t led = g_led_config.matrix_co[record->event.key.row][record->event.key.col];
+        if (led != NO_LED) {
+            ripples[ripple_idx].x = g_led_config.point[led].x;
+            ripples[ripple_idx].y = g_led_config.point[led].y;
+            ripples[ripple_idx].time = timer_read();
+            ripple_idx = (ripple_idx + 1) % RIPPLE_COUNT;
+        }
+    }
+    return true;
+}
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Layer 0 - Base
@@ -73,61 +93,93 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ,------+------+------+------+------+------.  ,------+------+------+------+------+------.
     // |      |      |      |      |      |      |  |      |      |      |      |      |      |
     // |------+------+------+------+------+------|  |------+------+------+------+------+------|
-    // |      |RGB_TG|RGB_MD|RGB_VD|RGB_VI|      |  |      |      |      |      |      |      |
+    // |      |      |      | LED- | LED+ |      |  |      | Scr- | Scr+ |      |      |      |
     // |------+------+------+------+------+------|  |------+------+------+------+------+------|
-    // |      |RGB_HI|RGB_SI|RGB_SD|RGB_SI|      |  |      |      |      |      |      |      |
+    // |      |      |      |SS(4) |SS(5) |      |  |      |      |      |      |      | Lock |
     // |------+------+------+------+------+------|  |------+------+------+------+------+------|
     // |(hold)|      |      |      |      |      |  |      |      |      |      |      |CW_TG |
     // `------+------+------+------+------+------'  `------+------+------+------+------+------'
     //                       |      |      |        |      |      |
     //                       `------+------'        `------+------'
     [3] = LAYOUT_voyager(
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, RGB_TOG, RGB_MOD, RGB_VAD, RGB_VAI, KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, RGB_HUI, RGB_SAI, RGB_SPD, RGB_SPI, KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, CW_TOGG,
-                                    KC_TRNS, KC_TRNS,                      KC_TRNS, KC_TRNS
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, RGB_VAD,    RGB_VAI,    KC_TRNS,            KC_TRNS, KC_BRID, KC_BRIU, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, SGUI(KC_4), SGUI(KC_5), KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, LCTL(LGUI(KC_Q)),
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,    KC_TRNS,    KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, CW_TOGG,
+                                    KC_TRNS,    KC_TRNS,                         KC_TRNS, KC_TRNS
     ),
 };
 
 // =====================================================================
 // RGB Matrix - Per-layer lighting
-// Layer 0: reactive ripple animation (purple)
-// Layer 1-3: active keys only with layer color
+// Layer 0: purple base + orange ripple on keypress (custom)
+// Layer 1-3: active keys only with layer color (white/cyan/green)
 // =====================================================================
 
 void keyboard_post_init_user(void) {
     rgb_matrix_enable_noeeprom();
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
-    rgb_matrix_sethsv_noeeprom(200, 120, 100); // Purple
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    rgb_matrix_sethsv_noeeprom(200, 120, 140); // Purple base
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
+    rgb_matrix_enable_noeeprom();
     if (get_highest_layer(state) == 0) {
-        rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
-        // HSV is not overridden here so Layer 3 RGB controls persist
-    } else {
-        rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+        rgb_matrix_sethsv_noeeprom(200, 120, rgb_matrix_get_val()); // Restore purple, keep brightness
     }
     return state;
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t layer = get_highest_layer(layer_state | default_layer_state);
+    uint8_t gv = rgb_matrix_get_val();
 
-    // Layer 0: let reactive effect handle it
-    if (layer == 0) return false;
+    if (layer == 0) {
+        // Layer 0: overlay orange ripples on purple base
+        // SOLID_COLOR mode renders the purple base; we only override ripple-affected LEDs
+        for (uint8_t i = led_min; i < led_max; i++) {
+            uint8_t best_v = 0;
+
+            for (uint8_t r = 0; r < RIPPLE_COUNT; r++) {
+                uint16_t elapsed = timer_elapsed(ripples[r].time);
+                if (elapsed >= RIPPLE_DURATION || ripples[r].time == 0) continue;
+
+                int16_t dx = (int16_t)g_led_config.point[i].x - (int16_t)ripples[r].x;
+                int16_t dy = (int16_t)g_led_config.point[i].y - (int16_t)ripples[r].y;
+                uint32_t dsq = (uint32_t)((int32_t)dx * dx) + (uint32_t)((int32_t)dy * dy);
+
+                // Expanding spread: starts tight (10px), grows wide (70px)
+                uint8_t spread = 10 + (uint16_t)elapsed * 60 / RIPPLE_DURATION;
+                if (dsq > (uint32_t)spread * spread) continue;
+
+                uint8_t dist = sqrt16(dsq > 65535 ? 65535 : (uint16_t)dsq);
+                uint8_t dist_fade = 255 - (uint16_t)dist * 255 / spread;
+                uint8_t time_fade = 255 - (uint16_t)elapsed * 255 / RIPPLE_DURATION;
+                uint8_t v = (uint16_t)dist_fade * time_fade / 255;
+                if (v > best_v) best_v = v;
+            }
+
+            if (best_v > 20) {
+                uint8_t v = (uint16_t)best_v * gv / 255;
+                HSV hsv = {30, 220, v};
+                RGB rgb = hsv_to_rgb(hsv);
+                rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+            }
+            // else: keep purple base from SOLID_COLOR mode
+        }
+        return false;
+    }
 
     // Layer 1-3: active keys only
     uint8_t h, s, v;
     switch (layer) {
-        case 1: h = 28;  s = 180; v = 140; break; // Amber
-        case 2: h = 140; s = 180; v = 130; break; // Cyan
-        case 3: h = 85;  s = 160; v = 90;  break; // Green
+        case 1: h = 0;   s = 0;   v = 200; break; // White
+        case 2: h = 140; s = 200; v = 180; break; // Cyan
+        case 3: h = 85;  s = 180; v = 150; break; // Green
         default: return false;
     }
     // Scale brightness by global setting (RGB_VAI/RGB_VAD affects all layers)
-    v = (uint16_t)v * rgb_matrix_get_val() / 255;
+    v = (uint16_t)v * gv / 255;
     HSV hsv = {h, s, v};
     RGB rgb = hsv_to_rgb(hsv);
 
