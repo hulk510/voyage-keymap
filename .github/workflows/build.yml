@@ -1,0 +1,40 @@
+name: Build firmware
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "X36BM/**"
+      - "Dockerfile"
+      - ".github/workflows/build.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Copy keymap to QMK tree
+        run: |
+          mkdir -p qmk_firmware/keyboards/zsa/voyager/keymaps
+          cp -r X36BM qmk_firmware/keyboards/zsa/voyager/keymaps/
+
+      - name: Build Docker image
+        run: docker build -t qmk .
+
+      - name: Build firmware
+        run: |
+          docker run -v ${{ github.workspace }}/qmk_firmware:/root --rm qmk /bin/sh -c "
+            make zsa/voyager:X36BM
+          "
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: voyager_X36BM
+          path: qmk_firmware/*.bin
