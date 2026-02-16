@@ -92,21 +92,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // =====================================================================
 // RGB Matrix - Per-layer lighting
-// All coloring handled in indicators function for reliability
+// Layer 0: reactive ripple animation (purple)
+// Layer 1-3: active keys only with layer color
 // =====================================================================
 
 void keyboard_post_init_user(void) {
     rgb_matrix_enable_noeeprom();
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
+    rgb_matrix_sethsv_noeeprom(200, 120, 100); // Purple
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    if (get_highest_layer(state) == 0) {
+        rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
+        rgb_matrix_sethsv_noeeprom(200, 120, 100); // Purple
+    } else {
+        rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    }
+    return state;
 }
 
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t layer = get_highest_layer(layer_state | default_layer_state);
 
-    // Layer colors (HSV)
+    // Layer 0: let reactive effect handle it
+    if (layer == 0) return false;
+
+    // Layer 1-3: active keys only
     uint8_t h, s, v;
     switch (layer) {
-        case 0: h = 200; s = 120; v = 100; break; // Purple
         case 1: h = 28;  s = 180; v = 140; break; // Amber
         case 2: h = 140; s = 180; v = 130; break; // Cyan
         case 3: h = 85;  s = 160; v = 90;  break; // Green
@@ -120,19 +134,13 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             uint8_t led_index = g_led_config.matrix_co[row][col];
             if (led_index == NO_LED || led_index < led_min || led_index >= led_max) continue;
 
-            if (layer == 0) {
-                // Layer 0: all keys lavender
-                rgb_matrix_set_color(led_index, rgb.r, rgb.g, rgb.b);
+            uint16_t keycode = keymaps[layer][row][col];
+            if (keycode == KC_TRANSPARENT || keycode == KC_NO) {
+                rgb_matrix_set_color(led_index, 0, 0, 0);
             } else {
-                // Layer 1-3: active keys colored, transparent keys off
-                uint16_t keycode = keymaps[layer][row][col];
-                if (keycode == KC_TRANSPARENT || keycode == KC_NO) {
-                    rgb_matrix_set_color(led_index, 0, 0, 0);
-                } else {
-                    rgb_matrix_set_color(led_index, rgb.r, rgb.g, rgb.b);
-                }
+                rgb_matrix_set_color(led_index, rgb.r, rgb.g, rgb.b);
             }
         }
     }
-    return true; // We handle all LED coloring
+    return true;
 }
