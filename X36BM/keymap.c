@@ -141,8 +141,9 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             uint8_t best_v = 0;
 
             for (uint8_t r = 0; r < RIPPLE_COUNT; r++) {
+                if (ripples[r].time == 0) continue;
                 uint16_t elapsed = timer_elapsed(ripples[r].time);
-                if (elapsed >= RIPPLE_DURATION || ripples[r].time == 0) continue;
+                if (elapsed >= RIPPLE_DURATION) { ripples[r].time = 0; continue; }
 
                 int16_t dx = (int16_t)g_led_config.point[i].x - (int16_t)ripples[r].x;
                 int16_t dy = (int16_t)g_led_config.point[i].y - (int16_t)ripples[r].y;
