@@ -9,7 +9,7 @@
 
 // Custom ripple effect: purple base + orange ripple on keypress
 #define RIPPLE_COUNT 8
-#define RIPPLE_DURATION 800
+#define RIPPLE_DURATION 400
 
 static struct { uint8_t x, y; uint16_t time; } ripples[RIPPLE_COUNT];
 static uint8_t ripple_idx;
@@ -113,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // =====================================================================
 // RGB Matrix - Per-layer lighting
 // Layer 0: purple base + orange ripple on keypress (custom)
-// Layer 1-3: active keys only with layer color (white/cyan/green)
+// Layer 1-3: active keys only with layer color (yellow/cyan/green)
 // =====================================================================
 
 void keyboard_post_init_user(void) {
@@ -171,15 +171,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     }
 
     // Layer 1-3: active keys only
-    uint8_t h, s, v;
+    uint8_t h, s;
     switch (layer) {
-        case 1: h = 0;   s = 0;   v = 200; break; // White
-        case 2: h = 140; s = 200; v = 180; break; // Cyan
-        case 3: h = 85;  s = 180; v = 150; break; // Green
+        case 1: h = 40;  s = 200; break; // Yellow/Gold
+        case 2: h = 140; s = 200; break; // Cyan
+        case 3: h = 85;  s = 180; break; // Green
         default: return false;
     }
-    // Scale brightness by global setting (RGB_VAI/RGB_VAD affects all layers)
-    v = (uint16_t)v * gv / 255;
+    // Use global brightness directly (slightly boosted so indicators are visible over base)
+    uint8_t v = (gv <= 215) ? gv + 40 : 255;
     HSV hsv = {h, s, v};
     RGB rgb = hsv_to_rgb(hsv);
 
