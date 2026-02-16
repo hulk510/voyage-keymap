@@ -40,3 +40,5 @@
 - `fetch-and-build-layout.yml` の Action を再実行すると Oryx のデフォルトで上書きされるので実行しない
 - Babel 制約なし (このリポジトリは C / QMK)
 - Voyage は QMK ベースのファームウェア
+- キーマップ (`X36BM/`) を変更したら `keymap-layout.html` も必ずセットで更新すること
+- LAYOUT_voyager のサムキー順序: 左は第1引数=内側、右は第1引数=外側（左右で逆）

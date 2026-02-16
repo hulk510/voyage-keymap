@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Voyage Keymap Layout</title>
+<style>
+  @page { size: A4 landscape; margin: 12mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "SF Mono", "Menlo", "Consolas", monospace; font-size: 11px; color: #222; background: #fff; padding: 16px; }
+  h1 { font-size: 18px; text-align: center; margin-bottom: 4px; }
+  .subtitle { text-align: center; color: #888; font-size: 10px; margin-bottom: 16px; }
+  .layer { page-break-inside: avoid; margin-bottom: 18px; }
+  .layer-header { font-size: 13px; font-weight: bold; margin-bottom: 6px; padding: 4px 8px; border-radius: 4px; display: inline-block; }
+  .layer-desc { font-size: 10px; color: #666; margin-left: 8px; }
+  .l0 .layer-header { background: #e8daf0; color: #4a2d6b; }
+  .l1 .layer-header { background: #eee; color: #333; }
+  .l2 .layer-header { background: #daeef5; color: #1a5276; }
+  .l3 .layer-header { background: #e8f5da; color: #3d5a1e; }
+  .keyboard { display: flex; gap: 24px; justify-content: center; align-items: start; }
+  .half { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; }
+  .thumb-cluster { display: flex; gap: 3px; justify-content: flex-end; margin-top: 3px; grid-column: 5 / 7; }
+  .thumb-cluster.left { justify-content: flex-end; }
+  .thumb-cluster.right { justify-content: flex-start; grid-column: 1 / 3; }
+  .key {
+    width: 56px; height: 40px;
+    border: 1.5px solid #bbb; border-radius: 5px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 10px; line-height: 1.2; text-align: center;
+    background: #fafafa; position: relative;
+  }
+  .key.blank { background: #f0f0f0; border-color: #ddd; color: #ccc; }
+  .key .hold { font-size: 8px; color: #999; position: absolute; bottom: 2px; }
+  .key .tap { font-size: 11px; font-weight: bold; }
+  .key.special { background: #fff3e0; border-color: #ffb74d; }
+  .key.mod { background: #e8eaf6; border-color: #7986cb; }
+  .key.thumb { height: 40px; width: 68px; }
+  .sep { display: flex; align-items: center; font-size: 20px; color: #ddd; padding: 0 4px; }
+  .legend { font-size: 9px; color: #888; margin-top: 12px; text-align: center; }
+  .legend span { margin: 0 8px; }
+  .hrm-note { font-size: 9px; color: #666; margin-top: 4px; margin-left: 8px; }
+</style>
+</head>
+<body>
+
+<h1>ZSA Voyage - Custom Keymap</h1>
+<div class="subtitle">QWERTY + Home Row Mods (GACS) / 4 Layers</div>
+
+<!-- Layer 0 -->
+<div class="layer l0">
+  <span class="layer-header">Layer 0 — Base</span>
+  <span class="layer-desc">常用レイヤー。Home Row Mods: A/⌘ S/⌥ D/⌃ F/⇧ | J/⇧ K/⌃ L/⌥ ;/⌘</span>
+  <div class="keyboard">
+    <div>
+      <div class="half">
+        <div class="key"><span class="tap">=</span></div>
+        <div class="key"><span class="tap">1</span></div>
+        <div class="key"><span class="tap">2</span></div>
+        <div class="key"><span class="tap">3</span></div>
+        <div class="key"><span class="tap">4</span></div>
+        <div class="key"><span class="tap">5</span></div>
+
+        <div class="key"><span class="tap">`</span></div>
+        <div class="key"><span class="tap">Q</span></div>
+        <div class="key"><span class="tap">W</span></div>
+        <div class="key"><span class="tap">E</span></div>
+        <div class="key"><span class="tap">R</span></div>
+        <div class="key"><span class="tap">T</span></div>
+
+        <div class="key special"><span class="tap">Esc</span></div>
+        <div class="key mod"><span class="tap">A</span><span class="hold">⌘</span></div>
+        <div class="key mod"><span class="tap">S</span><span class="hold">⌥</span></div>
+        <div class="key mod"><span class="tap">D</span><span class="hold">⌃</span></div>
+        <div class="key mod"><span class="tap">F</span><span class="hold">⇧</span></div>
+        <div class="key"><span class="tap">G</span></div>
+
+        <div class="key special"><span class="tap">MO(3)</span></div>
+        <div class="key"><span class="tap">Z</span></div>
+        <div class="key"><span class="tap">X</span></div>
+        <div class="key"><span class="tap">C</span></div>
+        <div class="key"><span class="tap">V</span></div>
+        <div class="key"><span class="tap">B</span></div>
+      </div>
+      <div class="thumb-cluster left">
+        <div class="key thumb mod"><span class="tap">Space</span><span class="hold">Layer1</span></div>
+        <div class="key thumb mod"><span class="tap">Tab</span><span class="hold">⌃</span></div>
+      </div>
+    </div>
+    <div class="sep">│</div>
+    <div>
+      <div class="half">
+        <div class="key"><span class="tap">6</span></div>
+        <div class="key"><span class="tap">7</span></div>
+        <div class="key"><span class="tap">8</span></div>
+        <div class="key"><span class="tap">9</span></div>
+        <div class="key"><span class="tap">0</span></div>
+        <div class="key"><span class="tap">Del</span></div>
+
+        <div class="key"><span class="tap">Y</span></div>
+        <div class="key"><span class="tap">U</span></div>
+        <div class="key"><span class="tap">I</span></div>
+        <div class="key"><span class="tap">O</span></div>
+        <div class="key"><span class="tap">P</span></div>
+        <div class="key"><span class="tap">\</span></div>
+
+        <div class="key"><span class="tap">H</span></div>
+        <div class="key mod"><span class="tap">J</span><span class="hold">⇧</span></div>
+        <div class="key mod"><span class="tap">K</span><span class="hold">⌃</span></div>
+        <div class="key mod"><span class="tap">L</span><span class="hold">⌥</span></div>
+        <div class="key mod"><span class="tap">;</span><span class="hold">⌘</span></div>
+        <div class="key"><span class="tap">-</span></div>
+
+        <div class="key"><span class="tap">N</span></div>
+        <div class="key"><span class="tap">M</span></div>
+        <div class="key"><span class="tap">,</span></div>
+        <div class="key"><span class="tap">.</span></div>
+        <div class="key"><span class="tap">/</span></div>
+        <div class="key"><span class="tap">'</span></div>
+      </div>
+      <div class="thumb-cluster right">
+        <div class="key thumb mod"><span class="tap">Bspc</span><span class="hold">Layer2</span></div>
+        <div class="key thumb mod"><span class="tap">Enter</span><span class="hold">⇧</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Layer 1 -->
+<div class="layer l1">
+  <span class="layer-header">Layer 1 — Symbols + Numpad</span>
+  <span class="layer-desc">Space ホールドで発動。左=記号ペア、右=テンキー</span>
+  <div class="keyboard">
+    <div>
+      <div class="half">
+        <div class="key"><span class="tap">~</span></div>
+        <div class="key"><span class="tap">!</span></div>
+        <div class="key"><span class="tap">@</span></div>
+        <div class="key"><span class="tap">#</span></div>
+        <div class="key"><span class="tap">$</span></div>
+        <div class="key"><span class="tap">%</span></div>
+
+        <div class="key"><span class="tap">`</span></div>
+        <div class="key"><span class="tap">[</span></div>
+        <div class="key"><span class="tap">{</span></div>
+        <div class="key"><span class="tap">(</span></div>
+        <div class="key"><span class="tap">&lt;</span></div>
+        <div class="key"><span class="tap">|</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key"><span class="tap">]</span></div>
+        <div class="key"><span class="tap">}</span></div>
+        <div class="key"><span class="tap">)</span></div>
+        <div class="key"><span class="tap">&gt;</span></div>
+        <div class="key"><span class="tap">&amp;</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key"><span class="tap">\</span></div>
+        <div class="key"><span class="tap">^</span></div>
+        <div class="key"><span class="tap">_</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+      </div>
+      <div class="thumb-cluster left">
+        <div class="key thumb special"><span class="tap">(hold)</span></div>
+        <div class="key thumb blank"><span class="tap">·</span></div>
+      </div>
+    </div>
+    <div class="sep">│</div>
+    <div>
+      <div class="half">
+        <div class="key"><span class="tap">=</span></div>
+        <div class="key"><span class="tap">7</span></div>
+        <div class="key"><span class="tap">8</span></div>
+        <div class="key"><span class="tap">9</span></div>
+        <div class="key"><span class="tap">/</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key"><span class="tap">*</span></div>
+        <div class="key"><span class="tap">4</span></div>
+        <div class="key"><span class="tap">5</span></div>
+        <div class="key"><span class="tap">6</span></div>
+        <div class="key"><span class="tap">-</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key"><span class="tap">+</span></div>
+        <div class="key"><span class="tap">1</span></div>
+        <div class="key"><span class="tap">2</span></div>
+        <div class="key"><span class="tap">3</span></div>
+        <div class="key"><span class="tap">.</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key"><span class="tap">0</span></div>
+        <div class="key"><span class="tap">0</span></div>
+        <div class="key"><span class="tap">,</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+      </div>
+      <div class="thumb-cluster right">
+        <div class="key thumb blank"><span class="tap">·</span></div>
+        <div class="key thumb blank"><span class="tap">·</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Layer 2 -->
+<div class="layer l2">
+  <span class="layer-header">Layer 2 — Navigation + F-keys + Media</span>
+  <span class="layer-desc">Bspc ホールドで発動。右=Vim HJKL 矢印、左=F-keys/メディア</span>
+  <div class="keyboard">
+    <div>
+      <div class="half">
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key"><span class="tap">F1</span></div>
+        <div class="key"><span class="tap">F2</span></div>
+        <div class="key"><span class="tap">F3</span></div>
+        <div class="key"><span class="tap">F4</span></div>
+        <div class="key"><span class="tap">F5</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key"><span class="tap">F11</span></div>
+        <div class="key"><span class="tap">F12</span></div>
+        <div class="key"><span class="tap">Vol-</span></div>
+        <div class="key"><span class="tap">Vol+</span></div>
+        <div class="key"><span class="tap">Mute</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key"><span class="tap">Prev</span></div>
+        <div class="key"><span class="tap">Next</span></div>
+        <div class="key"><span class="tap">Play</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+      </div>
+      <div class="thumb-cluster left">
+        <div class="key thumb blank"><span class="tap">·</span></div>
+        <div class="key thumb blank"><span class="tap">·</span></div>
+      </div>
+    </div>
+    <div class="sep">│</div>
+    <div>
+      <div class="half">
+        <div class="key"><span class="tap">F6</span></div>
+        <div class="key"><span class="tap">F7</span></div>
+        <div class="key"><span class="tap">F8</span></div>
+        <div class="key"><span class="tap">F9</span></div>
+        <div class="key"><span class="tap">F10</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key"><span class="tap">Home</span></div>
+        <div class="key"><span class="tap">PgUp</span></div>
+        <div class="key"><span class="tap">PgDn</span></div>
+        <div class="key"><span class="tap">End</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key special"><span class="tap">←</span></div>
+        <div class="key special"><span class="tap">↓</span></div>
+        <div class="key special"><span class="tap">↑</span></div>
+        <div class="key special"><span class="tap">→</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+      </div>
+      <div class="thumb-cluster right">
+        <div class="key thumb special"><span class="tap">(hold)</span></div>
+        <div class="key thumb blank"><span class="tap">·</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Layer 3 -->
+<div class="layer l3">
+  <span class="layer-header">Layer 3 — System</span>
+  <span class="layer-desc">MO(3) ホールドで発動。ファームウェア/RGB 設定</span>
+  <div class="keyboard">
+    <div>
+      <div class="half">
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key"><span class="tap">RGB±</span></div>
+        <div class="key"><span class="tap">RGB▶</span></div>
+        <div class="key"><span class="tap">明-</span></div>
+        <div class="key"><span class="tap">明+</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key"><span class="tap">色相</span></div>
+        <div class="key"><span class="tap">彩度</span></div>
+        <div class="key"><span class="tap">速-</span></div>
+        <div class="key"><span class="tap">速+</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key special"><span class="tap">(hold)</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+      </div>
+      <div class="thumb-cluster left">
+        <div class="key thumb blank"><span class="tap">·</span></div>
+        <div class="key thumb blank"><span class="tap">·</span></div>
+      </div>
+    </div>
+    <div class="sep">│</div>
+    <div>
+      <div class="half">
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key blank"><span class="tap">·</span></div>
+        <div class="key"><span class="tap">CW</span></div>
+      </div>
+      <div class="thumb-cluster right">
+        <div class="key thumb blank"><span class="tap">·</span></div>
+        <div class="key thumb blank"><span class="tap">·</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <span>· = 透過 (下レイヤー)</span>
+  <span style="background:#e8eaf6;padding:1px 6px;border-radius:3px;">青 = Mod-Tap</span>
+  <span style="background:#fff3e0;padding:1px 6px;border-radius:3px;">橙 = 特殊キー</span>
+  <span>⌘=Cmd ⌥=Opt ⌃=Ctrl ⇧=Shift</span>
+</div>
+
+</body>
+</html>
