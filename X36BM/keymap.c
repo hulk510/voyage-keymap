@@ -101,12 +101,25 @@ void keyboard_post_init_user(void) {
     rgb_matrix_sethsv_noeeprom(200, 50, 120);
 }
 
-// Switch RGB mode when changing layers
+// Switch RGB mode and color when changing layers
 layer_state_t layer_state_set_user(layer_state_t state) {
-    if (get_highest_layer(state) == 0) {
-        rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
-    } else {
-        rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+    switch (get_highest_layer(state)) {
+        case 0:
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
+            rgb_matrix_sethsv_noeeprom(200, 50, 120); // Lavender
+            break;
+        case 1:
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+            rgb_matrix_sethsv_noeeprom(0, 0, 140);    // White
+            break;
+        case 2:
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+            rgb_matrix_sethsv_noeeprom(140, 60, 140);  // Light blue
+            break;
+        case 3:
+            rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+            rgb_matrix_sethsv_noeeprom(80, 50, 100);   // Light yellow-green
+            break;
     }
     return state;
 }
