@@ -71,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // Layer 3 - System
     // ,------+------+------+------+------+------.  ,------+------+------+------+------+------.
-    // | BOOT |      |      |      |      |      |  |      |      |      |      |      |      |
+    // |      |      |      |      |      |      |  |      |      |      |      |      |      |
     // |------+------+------+------+------+------|  |------+------+------+------+------+------|
     // |      |RGB_TG|RGB_MD|RGB_VD|RGB_VI|      |  |      |      |      |      |      |      |
     // |------+------+------+------+------+------|  |------+------+------+------+------+------|
@@ -82,7 +82,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //                       |      |      |        |      |      |
     //                       `------+------'        `------+------'
     [3] = LAYOUT_voyager(
-        QK_BOOT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, RGB_TOG, RGB_MOD, RGB_VAD, RGB_VAI, KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, RGB_HUI, RGB_SAI, RGB_SPD, RGB_SPI, KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, CW_TOGG,
