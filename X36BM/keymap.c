@@ -106,10 +106,10 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // Layer colors (HSV)
     uint8_t h, s, v;
     switch (layer) {
-        case 0: h = 200; s = 50; v = 120; break; // Lavender
-        case 1: h = 0;   s = 0;  v = 140; break; // White
-        case 2: h = 140; s = 60; v = 140; break; // Light blue
-        case 3: h = 80;  s = 50; v = 100; break; // Light yellow-green
+        case 0: h = 200; s = 120; v = 100; break; // Purple
+        case 1: h = 28;  s = 180; v = 140; break; // Amber
+        case 2: h = 140; s = 180; v = 130; break; // Cyan
+        case 3: h = 85;  s = 160; v = 90;  break; // Green
         default: return false;
     }
     HSV hsv = {h, s, v};
