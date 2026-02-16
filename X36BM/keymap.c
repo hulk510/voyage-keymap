@@ -105,7 +105,7 @@ void keyboard_post_init_user(void) {
 layer_state_t layer_state_set_user(layer_state_t state) {
     if (get_highest_layer(state) == 0) {
         rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
-        rgb_matrix_sethsv_noeeprom(200, 120, 100); // Purple
+        // HSV is not overridden here so Layer 3 RGB controls persist
     } else {
         rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
     }
