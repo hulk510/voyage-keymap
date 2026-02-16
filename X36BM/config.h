@@ -4,3 +4,12 @@
 
 #define RGB_MATRIX_STARTUP_SPD 60
 
+// === Home Row Mods ===
+#define TAPPING_TERM 200
+#define QUICK_TAP_TERM 0
+#define PERMISSIVE_HOLD
+#define CHORDAL_HOLD
+
+// === RGB Matrix (reactive effect) ===
+#define RGB_MATRIX_KEYPRESSES
+#define ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
