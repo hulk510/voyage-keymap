@@ -5,7 +5,7 @@
 #define RGB_MATRIX_STARTUP_SPD 60
 
 // === Home Row Mods ===
-#define TAPPING_TERM 200
+#define TAPPING_TERM 280
 #define QUICK_TAP_TERM 150
 #define CHORDAL_HOLD
 
