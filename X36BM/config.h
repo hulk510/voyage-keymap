@@ -7,7 +7,6 @@
 // === Home Row Mods ===
 #define TAPPING_TERM 200
 #define QUICK_TAP_TERM 150
-#define PERMISSIVE_HOLD
 #define CHORDAL_HOLD
 
 // === RGB Matrix (reactive effect for Layer 0) ===
